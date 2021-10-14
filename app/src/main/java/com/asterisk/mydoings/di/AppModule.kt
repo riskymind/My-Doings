@@ -24,10 +24,10 @@ object AppModule {
     ) =
         Room.databaseBuilder(app, TodoDatabase::class.java, "todo_database")
             .fallbackToDestructiveMigration()
+            .addCallback(callback)
             .build()
 
     @Provides
-    @Singleton
     fun providesTodoDao(db: TodoDatabase) = db.getTodoDao()
 
     @ApplicationScope

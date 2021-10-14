@@ -15,6 +15,15 @@ interface TodoDao {
     @Delete
     suspend fun deleteTodo(todo: Todo)
 
-    @Query("SELECT * from todo_table")
-    fun getAllTodo(): Flow<List<Todo>>
+    fun getAllTodo(searchQuery: String, sortOrder: SortOrder, hideCompleted: Boolean): Flow<List<Todo>> =
+        when(sortOrder) {
+            SortOrder.BY_NAME -> getTodoSortedByName(searchQuery, hideCompleted)
+            SortOrder.BY_DATE -> getTodoSortedByDate(searchQuery, hideCompleted)
+        }
+
+    @Query("SELECT * FROM todo_table WHERE (completed != :hideCompleted OR completed = 0) AND whatTodo LIKE '%' || :searchQuery || '%' ORDER BY important DESC, whatTodo")
+    fun getTodoSortedByName(searchQuery: String, hideCompleted: Boolean): Flow<List<Todo>>
+
+    @Query("SELECT * FROM todo_table WHERE (completed != :hideCompleted OR completed = 0) AND whatTodo LIKE '%' || :searchQuery || '%' ORDER BY important DESC, createdAt")
+    fun getTodoSortedByDate(searchQuery: String, hideCompleted: Boolean): Flow<List<Todo>>
 }
