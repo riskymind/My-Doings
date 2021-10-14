@@ -59,13 +59,13 @@ class AddEditTodoViewModel @ViewModelInject constructor(
     private fun updateTodo(updatedTodo: Todo) = viewModelScope.launch {
         todoDao.updateTodo(updatedTodo)
         //send event success event
-        addEditEventChannels.send(AddEditEvent.NavigateBackWithResult(ADD_TODO_RESULT_OK))
+        addEditEventChannels.send(AddEditEvent.NavigateBackWithResult(EDIT_TODO_RESULT_OK))
     }
 
     private fun createNewTodo(newTodo: Todo) = viewModelScope.launch {
         todoDao.insertTodo(newTodo)
         //send event success event
-        addEditEventChannels.send(AddEditEvent.NavigateBackWithResult(EDIT_TODO_RESULT_OK))
+        addEditEventChannels.send(AddEditEvent.NavigateBackWithResult(ADD_TODO_RESULT_OK))
     }
 
 

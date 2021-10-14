@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,8 @@ import com.asterisk.mydoings.data.OnClickItemListener
 import com.asterisk.mydoings.data.SortOrder
 import com.asterisk.mydoings.data.Todo
 import com.asterisk.mydoings.databinding.FragmentTodoBinding
+import com.asterisk.mydoings.utils.Constants
+import com.asterisk.mydoings.utils.Constants.ADD_EDIT_RESULT
 import com.asterisk.mydoings.utils.onQueryTextChange
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +71,16 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
             }
         }
 
+        /**
+         * Notify users of action taken
+         * Add || Edit Action
+         */
+        setFragmentResultListener(ADD_EDIT_RESULT) { _, bundle ->
+            val result = bundle.getInt(ADD_EDIT_RESULT)
+            viewModel.displayActionProgress(result)
+        }
+
+
         viewModel.allTodo.observe(viewLifecycleOwner) {
             todoAdapter.submitList(it)
         }
@@ -75,7 +88,7 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
 
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.todoEvent.collect { event ->
-                when(event) {
+                when (event) {
                     is TodoFragmentViewModel.TodoEvents.ShowUndoDeleteTodoMessage -> {
                         Snackbar.make(requireView(), "Todo Deleted!!", Snackbar.LENGTH_LONG)
                             .setAction("UNDO") {
@@ -95,6 +108,9 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
                                 event.todo, "Edit Todo"
                             )
                         findNavController().navigate(action)
+                    }
+                    is TodoFragmentViewModel.TodoEvents.ShowTodoSaveConfirmationMsg -> {
+                        Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
                     }
                 }
             }

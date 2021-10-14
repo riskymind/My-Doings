@@ -8,6 +8,8 @@ import com.asterisk.mydoings.data.PreferenceManager
 import com.asterisk.mydoings.data.SortOrder
 import com.asterisk.mydoings.data.Todo
 import com.asterisk.mydoings.data.TodoRepository
+import com.asterisk.mydoings.utils.Constants.ADD_TODO_RESULT_OK
+import com.asterisk.mydoings.utils.Constants.EDIT_TODO_RESULT_OK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -75,10 +77,26 @@ class TodoFragmentViewModel @ViewModelInject constructor(
         todoEventsChannel.send(TodoEvents.NavigateToAddTodoScreen)
     }
 
+    fun displayActionProgress(result: Int) {
+        when(result) {
+            ADD_TODO_RESULT_OK -> showTodoSaveConfirmationMsg("What to-do is Saved")
+            EDIT_TODO_RESULT_OK -> showTodoEditConfirmationMsg("What to-do is Updated")
+        }
+    }
+
+    private fun showTodoEditConfirmationMsg(s: String) = viewModelScope.launch{
+        todoEventsChannel.send(TodoEvents.ShowTodoSaveConfirmationMsg(s))
+    }
+
+    private fun showTodoSaveConfirmationMsg(s: String) = viewModelScope.launch{
+        todoEventsChannel.send(TodoEvents.ShowTodoSaveConfirmationMsg(s))
+    }
+
 
     sealed class TodoEvents() {
         object NavigateToAddTodoScreen: TodoEvents()
         data class NavigateToEditTodoScreen(val todo: Todo): TodoEvents()
         data class ShowUndoDeleteTodoMessage(val todo: Todo): TodoEvents()
+        data class ShowTodoSaveConfirmationMsg(val message: String): TodoEvents()
     }
 }

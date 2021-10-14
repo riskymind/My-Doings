@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.asterisk.mydoings.R
 import com.asterisk.mydoings.databinding.FragmentAddEditTodoBinding
+import com.asterisk.mydoings.utils.Constants.ADD_EDIT_RESULT
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -55,8 +56,8 @@ class AddEditTodoFragment : Fragment(R.layout.fragment_add_edit_todo) {
                     is AddEditTodoViewModel.AddEditEvent.NavigateBackWithResult -> {
                         binding.etTodo.clearFocus()
                         setFragmentResult(
-                            "add_edit_result",
-                            bundleOf("add_edit_result" to event.result)
+                            ADD_EDIT_RESULT,
+                            bundleOf(ADD_EDIT_RESULT to event.result)
                         )
                         findNavController().popBackStack()
                     }
