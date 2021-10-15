@@ -26,4 +26,7 @@ interface TodoDao {
 
     @Query("SELECT * FROM todo_table WHERE (completed != :hideCompleted OR completed = 0) AND whatTodo LIKE '%' || :searchQuery || '%' ORDER BY important DESC, createdAt")
     fun getTodoSortedByDate(searchQuery: String, hideCompleted: Boolean): Flow<List<Todo>>
+
+    @Query("DELETE FROM todo_table WHERE completed = 1")
+    suspend fun deleteAllCompleted()
 }

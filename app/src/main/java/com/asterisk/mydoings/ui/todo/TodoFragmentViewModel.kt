@@ -92,9 +92,14 @@ class TodoFragmentViewModel @ViewModelInject constructor(
         todoEventsChannel.send(TodoEvents.ShowTodoSaveConfirmationMsg(s))
     }
 
+    fun onDeleteCompletedTodoClick() = viewModelScope.launch{
+        todoEventsChannel.send(TodoEvents.NavigateToDeleteAllCompleteTodoScreen)
+    }
+
 
     sealed class TodoEvents() {
         object NavigateToAddTodoScreen: TodoEvents()
+        object NavigateToDeleteAllCompleteTodoScreen: TodoEvents()
         data class NavigateToEditTodoScreen(val todo: Todo): TodoEvents()
         data class ShowUndoDeleteTodoMessage(val todo: Todo): TodoEvents()
         data class ShowTodoSaveConfirmationMsg(val message: String): TodoEvents()

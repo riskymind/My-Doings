@@ -32,4 +32,8 @@
             android:name="title"
             app:argType="string" />
     </fragment>
+    <dialog
+        android:id="@+id/todoDeleteDialog"
+        android:name="com.asterisk.mydoings.ui.deleteTodos.TodoDeleteDialog"
+        android:label="TodoDeleteDialog" /><action android:id="@+id/action_global_todoDeleteDialog" app:destination="@id/todoDeleteDialog"/>
 </navigation>

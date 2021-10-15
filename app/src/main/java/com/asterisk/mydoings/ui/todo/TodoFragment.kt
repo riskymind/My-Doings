@@ -112,6 +112,10 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
                     is TodoFragmentViewModel.TodoEvents.ShowTodoSaveConfirmationMsg -> {
                         Snackbar.make(requireView(), event.message, Snackbar.LENGTH_LONG).show()
                     }
+                    TodoFragmentViewModel.TodoEvents.NavigateToDeleteAllCompleteTodoScreen -> {
+                        val action = TodoFragmentDirections.actionGlobalTodoDeleteDialog()
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
@@ -157,7 +161,7 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
             }
 
             R.id.action_delete_all_complete_todo -> {
-
+                viewModel.onDeleteCompletedTodoClick()
                 true
             }
 
