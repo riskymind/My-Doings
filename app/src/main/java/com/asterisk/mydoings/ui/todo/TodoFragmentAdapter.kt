@@ -1,11 +1,14 @@
 package com.asterisk.mydoings.ui.todo
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.asterisk.mydoings.R
 import com.asterisk.mydoings.data.OnClickItemListener
 import com.asterisk.mydoings.data.Todo
 import com.asterisk.mydoings.databinding.TodoItemBinding
@@ -17,6 +20,7 @@ class TodoFragmentAdapter(private val listener: OnClickItemListener) : ListAdapt
         return TodoViewHolder(binding)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
         val currentItem = getItem(position)
         if (currentItem != null) {
@@ -49,12 +53,20 @@ class TodoFragmentAdapter(private val listener: OnClickItemListener) : ListAdapt
 
         }
 
+        @RequiresApi(Build.VERSION_CODES.M)
         fun bind(todo: Todo) {
+            val context = binding.root.context
             binding.apply {
                 cbCompleted.isChecked = todo.completed
                 tvTodo.text = todo.whatTodo
                 tvTodo.paint.isStrikeThruText = todo.completed
+                if (todo.completed) {
+                    todoContainer.setBackgroundResource(R.drawable.todo_completed_shape)
+                }
                 ivLabelPriority.isVisible = todo.important
+                if (todo.important) {
+                    todoContainer.setBackgroundResource(R.drawable.todo_important_shape)
+                }
             }
         }
     }

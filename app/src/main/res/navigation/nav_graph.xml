@@ -8,8 +8,8 @@
     <fragment
         android:id="@+id/todoFragment"
         android:name="com.asterisk.mydoings.ui.todo.TodoFragment"
-        android:label="fragment_todo"
-        tools:layout="@layout/fragment_todo" >
+        android:label="MyDoings"
+        tools:layout="@layout/fragment_todo">
         <action
             android:id="@+id/action_todoFragment_to_addEditTodoFragment"
             app:destination="@id/addEditTodoFragment"
@@ -21,13 +21,13 @@
     <fragment
         android:id="@+id/addEditTodoFragment"
         android:name="com.asterisk.mydoings.ui.add_edit_todo.AddEditTodoFragment"
-        android:label="fragment_add_edit_todo"
-        tools:layout="@layout/fragment_add_edit_todo" >
+        android:label="Add|Edit"
+        tools:layout="@layout/fragment_add_edit_todo">
         <argument
             android:name="todo"
+            android:defaultValue="@null"
             app:argType="com.asterisk.mydoings.data.Todo"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <argument
             android:name="title"
             app:argType="string" />
@@ -35,5 +35,6 @@
     <dialog
         android:id="@+id/todoDeleteDialog"
         android:name="com.asterisk.mydoings.ui.deleteTodos.TodoDeleteDialog"
-        android:label="TodoDeleteDialog" /><action android:id="@+id/action_global_todoDeleteDialog" app:destination="@id/todoDeleteDialog"/>
+        android:label="DeleteDialog" />
+    <action android:id="@+id/action_global_todoDeleteDialog" app:destination="@id/todoDeleteDialog" />
 </navigation>
