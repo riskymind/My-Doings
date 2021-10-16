@@ -26,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
@@ -138,6 +140,11 @@ class TodoFragment : Fragment(R.layout.fragment_todo), OnClickItemListener {
 
         searchView.onQueryTextChange {
             viewModel.searchQuery.value = it
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            menu.findItem(R.id.action_hide_complete_todo).isChecked =
+                viewModel.preferenceFlow.first().hideCompleted
         }
     }
 
